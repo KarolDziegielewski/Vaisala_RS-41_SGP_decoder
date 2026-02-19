@@ -30,7 +30,7 @@ Na podstawie słowa sunchronizującego "0000100001101101010100111000100001000100
 Ostatni etap to zapisanie danych do plików CSV/JSON lub wypisanie na konsolę.​
 
 # Wyniki działania programu na plik przykładowy:
-'''text
+`
 
     =======================================
        DEKODER SYGNAŁU Z SONDY RS$!-SGP
@@ -87,5 +87,5 @@ Ostatni etap to zapisanie danych do plików CSV/JSON lub wypisanie na konsolę.�
 [  240] (S1640290) 2025-06-09 04:42:12 lat: 52.21889  lon: 20.98386  alt: 150.47m
 [  241] (S1640290) 2025-06-09 04:42:13 lat: 52.21889  lon: 20.98385  alt: 149.82m
 [*] Pomyślnie zdekodowano 26 poprawnych ramek.
-'''
+`
 Pomijając kilka wyników znacząco odbiegających od reszty (tzw. błąd gruby) łatwo zauważyć, że sonda znajduje się na współrzędnych w pobliżu 52.2189 20.98386 (w pobliżu placu Narutowicza - Warszawa). A czas wysłania pakietu to 9 czerwca 2025 r. między 4:41:29 a 4:42:13. ID sondy wszędzie jest identyczne więc z dużym prawdopodieństwem jest to sonda S1640290.
