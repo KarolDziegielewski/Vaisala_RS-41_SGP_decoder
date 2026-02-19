@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 import argparse
 import json
 import csv
-# Maska XOR (pseudo-losowa sekwencja) używana do descramblingu, długość 64 bajty
 XOR_MASK = [
     0x96, 0x83, 0x3E, 0x51, 0xB1, 0x49, 0x08, 0x98, 
     0x32, 0x05, 0x59, 0x0E, 0xF9, 0x44, 0xC6, 0x26,
@@ -19,11 +18,6 @@ XOR_MASK = [
 ]
 
 def ecef_to_lla(x, y, z):
-    """
-    Konwertuje współrzędne kartezjańskie ECEF na klasyczne 
-    współrzędne geograficzne WGS84 (szerokość, długość, wysokość).
-    Zaimplementowane na podstawie oryginalnego wzoru z kodu C.
-    """
     a = 6378137.0
     b = 6356752.31424518
     
@@ -42,7 +36,6 @@ def ecef_to_lla(x, y, z):
         p - e**2 * a * math.cos(t)**3
     )
     
-    # Promień krzywizny
     R = a / math.sqrt(1 - e**2 * math.sin(phi)**2)
     h = p / math.cos(phi) - R
     
@@ -52,24 +45,19 @@ def ecef_to_lla(x, y, z):
     return lat, lon, h
 
 def parse_frame(descrambled_bytes):
-    # Sprawdzenie, czy ramka ma odpowiednią długość
     if len(descrambled_bytes) < 320:
         return None
         
     try:
-        # Numer ramki: offset 0x03B (59), 2 bajty, unsigned short (H)
         frame_nb = struct.unpack_from("<H", descrambled_bytes, 0x03B)[0]
         
-        # ID sondy: offset 0x03D (61), 8 bajtów, tekst ASCII
         sonde_id_bytes = descrambled_bytes[0x03D : 0x03D + 8]
         sonde_id = sonde_id_bytes.decode('ascii').strip('\x00')
         
-        # Czas GPS (Tydzień i Sekundy): offsety 0x095 i 0x097
         gps_week = struct.unpack_from("<H", descrambled_bytes, 0x095)[0]
         gps_tow_ms = struct.unpack_from("<I", descrambled_bytes, 0x097)[0]
         gps_tow_sec = gps_tow_ms / 1000.0
         
-        # Konwersja czasu GPS na datę i godzinę (Epoka GPS zaczęła się 6 stycznia 1980)
         gps_epoch = datetime(1980, 1, 6)
         frame_time = gps_epoch + timedelta(weeks=gps_week, seconds=gps_tow_sec)
         
@@ -77,14 +65,12 @@ def parse_frame(descrambled_bytes):
         ecef_x_cm = struct.unpack_from("<i", descrambled_bytes, 0x114)[0]
         ecef_y_cm = struct.unpack_from("<i", descrambled_bytes, 0x118)[0]
         ecef_z_cm = struct.unpack_from("<i", descrambled_bytes, 0x11C)[0]
-        
-        # Zamiana na metry
+
         x, y, z = ecef_x_cm / 100.0, ecef_y_cm / 100.0, ecef_z_cm / 100.0
         
-        # Transformacja na stopnie i wysokość n.p.m.
         lat, lon, alt = ecef_to_lla(x, y, z)
         
-        # Zwracamy czysty słownik z wynikami
+
         return {
             "frame_number": frame_nb,
             "sonde_id": sonde_id,
@@ -95,8 +81,8 @@ def parse_frame(descrambled_bytes):
         }
         
     except (struct.error, UnicodeDecodeError):
-        # Jeśli ramka jest uszkodzona i nie da się jej sparsować, omijamy ją (zgodnie z założeniami z Twojego polecenia)
         return None
+
 def descramble_frame(frame_bytes):
 
     descrambled = bytearray(len(frame_bytes))
@@ -125,8 +111,6 @@ def extract_bits(wav_path, baud_rate=4800):
 
     for idx in zero_crossings:
         n_samples = idx - prev_idx
-        
-  
         n_bits = int(round(n_samples / samples_per_bit))
         
         if n_bits > 0:
@@ -150,9 +134,6 @@ def bits_to_bytes(bit_array):
         chunk = bit_array[i:i+8]
         if len(chunk) < 8:
             break
-            
-        # Zgodnie z logiką z kodu C (funkcja bits2byte):
-        # bit 0 ma wagę 1, bit 1 ma wagę 2, bit 2 ma wagę 4 itd.
         val = sum(bit_val << idx for idx, bit_val in enumerate(chunk))
         bytes_list.append(val)
         
