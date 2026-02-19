@@ -183,8 +183,8 @@ def find_frames(bits):
     return frames
 
 def main():
-    parser = argparse.ArgumentParser(description="Dekoder telemetrii radiosondy Vaisala RS41-SGP")
-    parser.add_argument("wav_file", help="Ścieżka do pliku audio WAV (np. rs41_audio.wav)")
+    parser = argparse.ArgumentParser(description="Dekoder radiosondy Vaisala RS41-SGP")
+    parser.add_argument("wav_file", help="Ścieżka do pliku audio WAV")
     parser.add_argument("--csv", help="Zapisz zdekodowane dane do pliku CSV", metavar="PLIK.csv")
     parser.add_argument("--json", help="Zapisz zdekodowane dane do pliku JSON", metavar="PLIK.json")
     parser.add_argument("-v", "--verbose", action="store_true", help="Wyświetlaj zdekodowane ramki w terminalu")
@@ -234,4 +234,28 @@ def main():
         print(f"[*] Zapisano dane do pliku JSON: {args.json}")
 
 if __name__ == "__main__":
+    print('''
+    =======================================
+       DEKODER SYGNAŁU Z SONDY RS$!-SGP
+    ============================'==========
+         Karol Dzięgielewski SP5XKD
+    =======================================
+
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼███████┼┼┼┼████████┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼██┼┼█┼┼██┼┼██████████┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼█┼┼█████┼██┼┼█┼┼███┼█┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼█┼████┼┼██████┼█████┼█┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼██┼┼██████████████┼█┼█┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼███┼██████████████████┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼█┼██┼██┼┼┼██████┼┼██┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼██┼┼█████████┼█┼██┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼███┼┼███┼┼┼█████┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼█████████┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██┼┼┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼██┼██┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼█┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+    ┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼┼
+''')
     main()
